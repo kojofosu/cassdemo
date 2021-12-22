@@ -13,11 +13,12 @@ class CassandraKeyspaceConfig {
 
     val keyspace = "testkeyspace"
     val tableName = "users"
+    private lateinit var session: CqlSession
 
     /*create connection*/
     @Bean
     fun configureCassandraDb() {
-        val session: CqlSession = CqlSession.builder()
+        session = CqlSession.builder()
             .addContactPoint(InetSocketAddress("localhost", 9042))
             .withLocalDatacenter("datacenter1")
             .build()
@@ -37,5 +38,15 @@ class CassandraKeyspaceConfig {
 
         session.execute(createKs) //create the keyspace
         session.execute(createTb) //create the table
+    }
+
+    @Bean
+    fun session(): CqlSession {
+        return this.session
+    }
+
+    @Bean
+    fun close() {
+        session.close()
     }
 }
