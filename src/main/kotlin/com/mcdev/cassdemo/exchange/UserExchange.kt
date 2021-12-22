@@ -14,4 +14,8 @@ class UserExchange {
     fun createUser(user: User) {
         userRepository.save(user)
     }
+
+    fun getUsers(): List<User> {
+        return userRepository.findAll()
+    }
 }
